@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+    broker:
+        build: broker
+        # Use host network because of problems with akka host names in Docker
+        # https://doc.akka.io/docs/akka/current/remoting-artery.html#remote-configuration-nat-artery
+        network_mode: host
+    borrow:
+        build: borrow
+        network_mode: host
+        depends_on:
+            - broker
+    client:
+        build: client
+        network_mode: host
+        depends_on:
+            - broker
+    catalogue:
+        build: catalogue
+        network_mode: host
+        depends_on:
+            - broker
+    registry:
+        build: registry
+        network_mode: host
+        depends_on:
+            - broker
